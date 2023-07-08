@@ -1,0 +1,22 @@
+# ---------------------------------
+# |    KOOK Bot | KOOK 机器人      |
+# ---------------------------------
+# 此插件是受EssentialsXDiscord的灵感，接入KOOK的机器人通讯插件！
+# 目前处于开发阶段，欢迎PR和提Issues！https://github.com/littlekan233/KOOKBot
+# 如何创建KOOK机器人？点击此链接->https://developer.kookapp.cn/app/index
+
+# 你需要填写token才能正常使用机器人
+token: "y0uR_7okEN"
+
+# 你必须连接一个m...啊呸，kook服务器
+kook_server_id: "0001145141919810"
+
+# 邀请链接来一套~
+# 在输入命令 /kook invite 时显示~
+invite-url: "https://kook.top/Y0urS3rv3R"
+
+# 你想要哪些功能？
+features:
+  link: true # 链接账户支持
+  send2kook: false # 向kook服务器发送消息
+  send2mc: false # 在kook里发送消息到服务器
