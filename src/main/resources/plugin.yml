@@ -1,0 +1,4 @@
+name: KOOKBot
+version: '${project.version}'
+main: ml.littlekan.kookbot.KOOKBot
+api-version: '1.20'
