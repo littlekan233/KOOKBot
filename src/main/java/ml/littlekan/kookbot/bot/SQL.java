@@ -26,8 +26,10 @@ public class SQL {
             sql = sqlconn.createStatement();
             String exec = "create table if not exists kookbot_session ( token text primary key not null, wsurl text not null, session_id text not null, sn int not null );";
             String exec2 = "create table if not exists kookbot_link ( mcname text primary key not null, kookid text not null );";
+            String exec3 = "create table if not exists kookbot_link_req ( mcid text primary key not null, reqid text not null );";
             sql.executeUpdate(exec);
             sql.executeUpdate(exec2);
+            sql.executeUpdate(exec3);
         } catch (SQLException e) {
             new ErrorOut(e);return;
         }
@@ -67,6 +69,10 @@ public class SQL {
             if(rs.getString("mcname") == mcuser) return rs;
         }
         return null;
+    }
+
+    public void createLinkRequest(String mcname){
+        //
     }
 
     public void close(){

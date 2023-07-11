@@ -1,5 +1,10 @@
 package ml.littlekan.kookbot.bot;
 
+import lombok.Data;
+import java.io.Serializable;
+
 public class MessageProc {
-    public MessageProc(String content, String token){}
+    public MessageProc(ResponseBean bean, String token){
+        //
+    }
 }

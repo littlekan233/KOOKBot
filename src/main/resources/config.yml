@@ -8,16 +8,31 @@
 # 你需要填写token才能正常使用机器人
 token: "y0uR_7okEN"
 
-# 你必须连接一个m...啊呸，kook服务器
-kook_server_id: "0001145141919810"
+# 你必须连接一个M...啊呸，KOOK服务器的频道
+# 打开开发者工具后，右键频道复制！而且消息处理要在这个频道上进行！
 kook_channel_id: "0001145141919810"
 
 # 邀请链接来一套~
 # 在输入命令 /kook invite 时显示~
-invite-url: "https://kook.top/Y0urS3rv3R"
+invite_url: "https://kook.top/Y0urS3rv3R"
+
+# 你需要设定一下发送信息格式（谁愿意见到丑陋的聊天信息啊喂）
+chat_format:
+  # MC服务器→KOOK服务器
+  kook: "[{display_name}] {message}"
+  # KOOK服务器→MC服务器
+  mc: "&a[KOOK] &6{kook_name}&l({mc_name}) &7>> &f&r{message}"
+  # 占位符：
+  # {display_name}  仅MC->KOOK  显示名，先获取绑定信息然后@出来，否则用游戏名
+  # {kook_name}  仅KOOK->MC  KOOK昵称
+  # {mc_name}  仅KOOK->MC  在MC显示的用户名（非MC里的nick！）
+  # {message}  两种都适用  【必须要！否则插件将因为不存在此占位符而禁用！】显示的信息
 
 # 你想要哪些功能？
 features:
-  link: true # 链接账户支持
-  send2kook: false # 向kook服务器发送消息
-  send2mc: false # 在kook里发送消息到服务器
+  # 绑定账户支持↓
+  bind: true
+  # 向KOOK服务器发送消息↓
+  send2kook: false
+  # 在KOOK里发送消息到服务器↓
+  send2mc: false

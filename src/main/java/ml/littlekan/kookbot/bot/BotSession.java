@@ -1,18 +1,16 @@
 package ml.littlekan.kookbot.bot;
 
+import com.google.gson.Gson;
+import ml.littlekan.kookbot.ErrorOut;
+import ml.littlekan.kookbot.KOOKBot;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import javax.websocket.*;
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import org.bukkit.plugin.java.JavaPlugin;
-import ml.littlekan.kookbot.ErrorOut;
-import ml.littlekan.kookbot.KOOKBot;
-import javax.websocket.*;
-import lombok.Data;
-import com.google.gson.Gson;
-import org.bukkit.scheduler.BukkitRunnable;
 
 @ClientEndpoint
 public class BotSession {
@@ -22,7 +20,7 @@ public class BotSession {
     private WebSocketContainer ws;
     private Session wss;
     private boolean pong = false;
-    private SQL sql = KOOKBot.getSql();
+    private SQL sql = KOOKBot.getSQL();
     
     public BotSession(String token){
         this.token = token;
@@ -87,7 +85,7 @@ public class BotSession {
     @OnMessage
     public void onMessage(String msg) throws SQLException, SessionException{
         Gson g = new Gson();
-        Bean data = g.fromJson(msg, Bean.class);
+        ResponseBean data = g.fromJson(msg, ResponseBean.class);
         switch (data.getS()){
             case 1:
                 if(data.getD().getCode() == 0){
@@ -98,7 +96,7 @@ public class BotSession {
                 }
             case 0:
                 sql.snUpdate(token, data.getSn());
-                new MessageProc(data.getD().getContent(), token);
+                new MessageProc(data, token);
                 break;
             case 3:
                 pong = true;
@@ -107,19 +105,6 @@ public class BotSession {
                 throw new SessionException("完了！机器人电话打不通了！Σ(っ °Д °;)っ 明明上次还通的啊！", new ResponseException(data.getD().getCode()), wss);
             case 6:
                 instance.getLogger().info("");
-        }
-    }
-
-    @Data
-    private class Bean implements Serializable{
-        private int s; // 信令
-        private int sn; // 一个sn值，仅在信令为0时传值
-        private DataBean d; // 数据，结构见Bean类
-        @Data
-        private class DataBean implements Serializable{
-            private int code; // 状态码，成功为0，错误见kook开发者平台
-            private String session_id; // 会话id，多用于hello包和resumeack包
-            private String content;
         }
     }
 }
