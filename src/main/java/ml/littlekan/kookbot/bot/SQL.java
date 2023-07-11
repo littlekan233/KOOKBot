@@ -1,5 +1,6 @@
 package ml.littlekan.kookbot.bot;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.sql.*;
 import java.io.File;
@@ -16,13 +17,14 @@ public class SQL {
         try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException e) {
-            new ErrorOut(e);return;
+            new ErrorOut(new RuntimeException("KOOKBot插件将因为 SQLite 数据库初始化错误禁用！", e));
+            Bukkit.getPluginManager().disablePlugin(instance);
         }
         String path = new File(instance.getDataFolder(), "kookbot.db").getPath();
         try {
             sqlconn = DriverManager.getConnection("jdbc:sqlite:" + path);
             sql = sqlconn.createStatement();
-            String exec = "create table if not exists kookbot_session ( token text primary key not null, wsurl text not null, session_id text not null );";
+            String exec = "create table if not exists kookbot_session ( token text primary key not null, wsurl text not null, session_id text not null, sn int not null );";
             String exec2 = "create table if not exists kookbot_link ( mcname text primary key not null, kookid text not null );";
             sql.executeUpdate(exec);
             sql.executeUpdate(exec2);
@@ -31,9 +33,17 @@ public class SQL {
         }
     }
 
-    public void setSession(String token, String wsurl, String sid) throws SQLException{
-        String exec = "insert into kookbot_session values ( '" + token +"', '" + wsurl + "', '" + sid + "' );";
+    public void setSession(String token, String wsurl, String sid, int sn) throws SQLException{
+        String exec = "insert into kookbot_session values ( '" + token +"', '" + wsurl + "', '" + sid + "', " + new StringBuilder(sn).toString() + " );";
         if (getSession(token) == null) sql.executeUpdate(exec);
+    }
+
+    public void snUpdate(String token, int sn) throws SQLException{
+        ResultSet rs = getSession(token);
+        if(rs.getInt("sn") < sn){
+            String exec = "update kookbot_session set sn=" + new StringBuilder(sn).toString() + " where token=\"" + token + "\";";
+            sql.executeUpdate(exec);
+        }
     }
 
     public ResultSet getSession(String token) throws SQLException{

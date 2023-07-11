@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.bukkit.plugin.java.JavaPlugin;
 import ml.littlekan.kookbot.ErrorOut;
@@ -21,14 +22,21 @@ public class BotSession {
     private WebSocketContainer ws;
     private Session wss;
     private boolean pong = false;
+    private SQL sql = KOOKBot.getSql();
     
     public BotSession(String token){
         this.token = token;
         try {
-            if(KOOKBot.getSql().getSession(token) == null){
+            if(sql.getSession(token) == null){
                 Gateway g = new Gateway(token);
                 g.get();
                 this.gurl = g.getGateway();
+            }else{
+                ResultSet session = sql.getSession(token);
+                String url = session.getString("wsurl");
+                String sn = new StringBuilder(session.getInt("sn")).toString();
+                String sid = session.getString("session_id");
+                this.gurl = url + "&resume=1&sn=" + sn + "&session_id=" + sid;
             }
             connect();
             runPingPong();
@@ -49,7 +57,9 @@ public class BotSession {
                 try {Thread.sleep(ms);} catch (InterruptedException e) {}
             }
 
-            private void retry(){}
+            private void retry(){
+                //
+            }
 
             @Override
             public void run(){
@@ -57,7 +67,7 @@ public class BotSession {
                 while(!KOOKBot.isStop()){
                     String sn = "0";
                     try {
-                        sn = new StringBuilder(KOOKBot.getSql().getSession(token).getInt("sn")).toString();
+                        sn = new StringBuilder(sql.getSession(token).getInt("sn")).toString();
                     } catch (SQLException e) {
                         new ErrorOut(e);
                     }
@@ -75,10 +85,29 @@ public class BotSession {
     }
 
     @OnMessage
-    public void onMessage(String msg){
+    public void onMessage(String msg) throws SQLException, SessionException{
         Gson g = new Gson();
         Bean data = g.fromJson(msg, Bean.class);
-        switch (data.getS()){}
+        switch (data.getS()){
+            case 1:
+                if(data.getD().getCode() == 0){
+                    sql.setSession(token, gurl, data.getD().getSession_id(), 0);
+                    break;
+                }else{
+                    throw new SessionException("机器人溜号了！(#ﾟДﾟ)", new ResponseException(data.getD().getCode()), wss);
+                }
+            case 0:
+                sql.snUpdate(token, data.getSn());
+                new MessageProc(data.getD().getContent(), token);
+                break;
+            case 3:
+                pong = true;
+                break;
+            case 5:
+                throw new SessionException("完了！机器人电话打不通了！Σ(っ °Д °;)っ 明明上次还通的啊！", new ResponseException(data.getD().getCode()), wss);
+            case 6:
+                instance.getLogger().info("");
+        }
     }
 
     @Data
