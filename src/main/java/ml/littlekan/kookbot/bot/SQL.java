@@ -71,7 +71,7 @@ public class SQL {
         return null;
     }
 
-    public void createLinkRequest(String mcname){
+    public void createLinkRequest(String mcname, String verifycode){
         //
     }
 
