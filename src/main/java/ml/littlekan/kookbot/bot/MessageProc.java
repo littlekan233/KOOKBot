@@ -4,7 +4,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 public class MessageProc {
-    public MessageProc(ResponseBean bean, String token){
+    public MessageProc(ResponseBean bean){
         //
     }
 }

@@ -96,7 +96,7 @@ public class BotSession {
                 }
             case 0:
                 sql.snUpdate(token, data.getSn());
-                new MessageProc(data, token);
+                new MessageProc(data);
                 break;
             case 3:
                 pong = true;
