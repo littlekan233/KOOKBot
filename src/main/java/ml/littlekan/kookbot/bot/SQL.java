@@ -6,6 +6,9 @@ import java.sql.*;
 import java.io.File;
 import java.lang.Class;
 import ml.littlekan.kookbot.ErrorOut;
+import ml.littlekan.kookbot.KOOKMessageSender;
+import ml.littlekan.kookbot.user.KOOKUser;
+import net.md_5.bungee.api.ChatColor;
 
 public class SQL {
     private JavaPlugin instance;
@@ -26,7 +29,7 @@ public class SQL {
             sql = sqlconn.createStatement();
             String exec = "create table if not exists kookbot_session ( token text primary key not null, wsurl text not null, session_id text not null, sn int not null );";
             String exec2 = "create table if not exists kookbot_link ( mcname text primary key not null, kookid text not null );";
-            String exec3 = "create table if not exists kookbot_link_req ( mcid text primary key not null, reqid text not null );";
+            String exec3 = "create table if not exists kookbot_link_req ( mcid text primary key not null, verifycode text not null );";
             sql.executeUpdate(exec);
             sql.executeUpdate(exec2);
             sql.executeUpdate(exec3);
@@ -72,7 +75,23 @@ public class SQL {
     }
 
     public void createLinkRequest(String mcname, String verifycode){
-        //
+        String exec = "insert into kookbot_link_req values ( '" + mcname + "', '" + verifycode + "' )";
+        try {
+            sql.executeUpdate(exec);
+        } catch (SQLException e) {
+            new ErrorOut(e);
+        }
+    }
+
+    public String getLinkRequestPlayerName(String verifycode){
+        try (ResultSet rs = sql.executeQuery("select * from kookbot_link_req")) {
+            while(rs.next()){
+                if(rs.getString("verifycode") == verifycode) return rs.getString("mcid");
+            }
+        } catch (SQLException e) {
+            new ErrorOut(e);
+        }
+        return "_$NullPlayer$_";
     }
 
     public void close(){
@@ -82,5 +101,12 @@ public class SQL {
         } catch (SQLException e) {
             new ErrorOut(e);
         }
+    }
+
+    public void linkRequestAccept(String verifycode, String userid, String quotemsg) {
+        KOOKUser kooku = new KOOKUser(userid);
+        String playername = getLinkRequestPlayerName(verifycode);
+        Bukkit.getPlayer(playername).sendMessage(ChatColor.translateAlternateColorCodes('&',"&a[KOOKBot] &f&a绑定成功！欢迎来到这里，" + kooku.fullname + "（本服KOOK服务器名称：" + kooku.nickname + "）！ (/≧▽≦/)"));
+        new KOOKMessageSender("[KOOKBot] 绑定成功！以后，" + playername + "是您的别称~ ヾ(≧▽≦*)o", quotemsg).send();
     }
 }

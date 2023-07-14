@@ -1,7 +1,8 @@
 package ml.littlekan.kookbot;
 
 import ml.littlekan.kookbot.bot.SQL;
-import org.bukkit.ChatColor;
+import org.bukkit.Bukkit;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.entity.Player;
 import java.util.Random;
 
@@ -21,8 +22,8 @@ public class BindManager {
         msg(p, "&a/bind &6" + verify);
     }
 
-    public void bindResponse(String verifycode, String userid){
-        sqli.linkRequestAccept(verifycode);
+    public void bindResponsed(String msgid, String verifycode, String userid){
+        sqli.linkRequestAccept(verifycode, userid, msgid);
     }
 
     private void msg(Player sender, String msg){

@@ -10,8 +10,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 
 public class Gateway {
     private String token;
@@ -34,8 +32,6 @@ public class Gateway {
             int code = data.getCode();
             if(code == 0) this.gateway = data.getData().getUrl();
             conn.disconnect();
-        } catch (MalformedURLException | ProtocolException e) {
-            new ErrorOut(e);
         } catch (IOException e) {
             new ErrorOut(e);
         }

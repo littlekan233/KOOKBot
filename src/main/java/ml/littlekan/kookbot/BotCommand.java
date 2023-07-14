@@ -2,7 +2,7 @@ package ml.littlekan.kookbot;
 
 import java.util.List;
 import java.util.ArrayList;
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.command.Command;
@@ -33,7 +33,7 @@ public class BotCommand implements TabExecutor {
                     msg(sender, "&6/kook send <message> &7-- &a发送信息到本服务器的KOOK服务器");
                     break;
                 case "invite":
-                    String url = JavaPlugin.getPlugin(KOOKBot.class).getConfig().getString("invite-url");
+                    String url = KOOKBot.getPluginConfig().getString("invite-url");
                     msg(sender, "&b此服务器的KOOK链接：&6&n" + url);
                     break;
                 default:
