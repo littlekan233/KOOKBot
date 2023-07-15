@@ -1,6 +1,7 @@
 package ml.littlekan.kookbot.bot;
 
 import lombok.Data;
+
 import java.io.Serializable;
 
 @Data

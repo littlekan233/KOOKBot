@@ -4,10 +4,9 @@ import com.google.gson.Gson;
 import ml.littlekan.kookbot.ErrorOut;
 import ml.littlekan.kookbot.KOOKBot;
 import ml.littlekan.kookbot.ResponseException;
-import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+
 import javax.websocket.*;
 import java.io.IOException;
 import java.net.URI;

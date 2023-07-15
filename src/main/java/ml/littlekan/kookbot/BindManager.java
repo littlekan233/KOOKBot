@@ -1,9 +1,9 @@
 package ml.littlekan.kookbot;
 
 import ml.littlekan.kookbot.bot.SQL;
-import org.bukkit.Bukkit;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.entity.Player;
+
 import java.util.Random;
 
 public class BindManager {

@@ -1,7 +1,8 @@
 package ml.littlekan.kookbot;
 
-import java.util.logging.Logger;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.logging.Logger;
 
 public class ErrorOut {
     public ErrorOut(Throwable e){

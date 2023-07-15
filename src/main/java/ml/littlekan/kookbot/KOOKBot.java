@@ -3,15 +3,16 @@ package ml.littlekan.kookbot;
 import lombok.Getter;
 import lombok.Setter;
 import ml.littlekan.kookbot.bot.BotSession;
+import ml.littlekan.kookbot.bot.SQL;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+
 import java.io.File;
-import ml.littlekan.kookbot.bot.SQL;
 
 public final class KOOKBot extends JavaPlugin {
     private static SQL sqli;
     private static boolean stop;
-    @Getter private static FileConfiguration pluginConfig;
+    @Getter @Setter private static FileConfiguration pluginConfig;
     @Getter private static BindManager bindManager;
 
     @Override
@@ -39,11 +40,20 @@ public final class KOOKBot extends JavaPlugin {
         getLogger().info("§a主人再见！ (◍ ´꒳` ◍)");
     }
 
+    public static void silentKillDaemon(){
+        stop = true;
+        sqli.close();
+    }
+
     public static SQL getSQL(){
         return sqli;
     }
 
     public static boolean isStop(){
         return stop;
+    }
+
+    public static void updateConfig(){
+        pluginConfig = JavaPlugin.getPlugin(KOOKBot.class).getConfig();
     }
 }

@@ -1,14 +1,15 @@
 package ml.littlekan.kookbot.user;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
 import com.google.gson.Gson;
-import java.net.HttpURLConnection;
 import ml.littlekan.kookbot.ErrorOut;
 import ml.littlekan.kookbot.KOOKBot;
 import ml.littlekan.kookbot.ResponseException;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class KOOKUser {
     public String username;

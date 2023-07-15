@@ -1,16 +1,14 @@
 package ml.littlekan.kookbot;
 
-import java.net.URL;
-
 import com.google.gson.Gson;
-
 import lombok.Data;
-import java.net.HttpURLConnection;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class KOOKMessageSender {
     private String channelid;
@@ -34,7 +32,11 @@ public class KOOKMessageSender {
             conn.setDoInput(true);
             OutputStreamWriter osw = new OutputStreamWriter(conn.getOutputStream(), "utf-8");
             PrintWriter pw = new PrintWriter(osw);
-            pw.print("{\"target_id\": \"" + channelid + "\", \"quote\": \"" + quotemsgid + "\", \"content\": \"" + msg + "\"}");
+            if(quotemsgid == "-1"){
+                pw.print("{\"target_id\": \"" + channelid + "\", \"content\": \"" + msg + "\"}");
+            }else{
+                pw.print("{\"target_id\": \"" + channelid + "\", \"quote\": \"" + quotemsgid + "\", \"content\": \"" + msg + "\"}");
+            }
             pw.flush();
             InputStreamReader isr = new InputStreamReader(conn.getInputStream());
             Response r = new Gson().fromJson(isr, Response.class);

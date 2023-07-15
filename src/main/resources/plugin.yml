@@ -7,3 +7,7 @@ commands:
   kook:
     description: "KOOKBot 主命令"
     usage: "/kook [invite|help|link|send <message>]"
+permissions:
+  kookbot.admin:
+    description: "KOOKBot 管理员权限！"
+    default: op

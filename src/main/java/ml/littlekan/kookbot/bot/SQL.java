@@ -1,14 +1,15 @@
 package ml.littlekan.kookbot.bot;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.java.JavaPlugin;
-import java.sql.*;
-import java.io.File;
-import java.lang.Class;
 import ml.littlekan.kookbot.ErrorOut;
 import ml.littlekan.kookbot.KOOKMessageSender;
 import ml.littlekan.kookbot.user.KOOKUser;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.sql.*;
+import java.util.Objects;
 
 public class SQL {
     private JavaPlugin instance;
@@ -111,9 +112,19 @@ public class SQL {
     }
 
     public void linkRequestAccept(String verifycode, String userid, String quotemsg) {
-        KOOKUser kooku = new KOOKUser(userid);
-        String playername = getLinkRequestPlayerName(verifycode);
-        Bukkit.getPlayer(playername).sendMessage(ChatColor.translateAlternateColorCodes('&',"&a[KOOKBot] &f&a绑定成功！欢迎来到这里，" + kooku.fullname + "（本服KOOK服务器名称：" + kooku.nickname + "）！ (/≧▽≦/)"));
-        new KOOKMessageSender("[KOOKBot] 绑定成功！以后，" + playername + "是您的别称~ ヾ(≧▽≦*)o", quotemsg).send();
+        try {
+            KOOKUser kooku = new KOOKUser(userid);
+            String playername = getLinkRequestPlayerName(verifycode);
+            String exec = "insert into kookbot_link values ( '" + playername + "', '" + userid +"' )";
+            sql.executeUpdate(exec);
+            Objects.requireNonNull(Bukkit.getPlayer(playername))
+                    .sendMessage(ChatColor.translateAlternateColorCodes(
+                            '&',
+                            "&a[KOOKBot] &f&a绑定成功！欢迎来到这里，" + kooku.fullname + "（本服KOOK服务器名称：" + kooku.nickname + "）！ (/≧▽≦/)")
+                    );
+            new KOOKMessageSender("[KOOKBot] 绑定成功！以后，" + playername + "是您的别称~ ヾ(≧▽≦*)o", quotemsg).send();
+        } catch (SQLException e) {
+            new ErrorOut(e);
+        }
     }
 }

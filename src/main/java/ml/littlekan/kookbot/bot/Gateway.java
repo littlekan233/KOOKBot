@@ -1,15 +1,16 @@
 package ml.littlekan.kookbot.bot;
 
-import java.net.URL;
+import com.google.gson.Gson;
 import lombok.Data;
 import lombok.Getter;
-import com.google.gson.Gson;
 import ml.littlekan.kookbot.ErrorOut;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class Gateway {
     private String token;

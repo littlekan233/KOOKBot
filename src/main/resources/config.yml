@@ -26,7 +26,7 @@ chat_format:
   # KOOK服务器→MC服务器
   mc: "&a[KOOK] &6{kook_name}&l({mc_name}) &7>> &f&r{message}"
   # 占位符：
-  # {display_name}  仅MC->KOOK  显示名，先获取绑定信息然后@出来，否则无法绑定
+  # {display_name}  仅MC->KOOK  显示名，先获取绑定信息然后@出来，如果未绑定无法发送 显示格式：@mykookuser<mymcname>
   # {kook_name}  仅KOOK->MC  KOOK昵称（不是服务器内昵称！）
   # {mc_name}  仅KOOK->MC  在MC显示的用户名（非MC里的nick！）
   # {message}  两种都适用  【必须要！否则插件将因为不存在此占位符而禁用！】显示的信息

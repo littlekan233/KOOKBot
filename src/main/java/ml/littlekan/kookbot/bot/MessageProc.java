@@ -3,10 +3,11 @@ package ml.littlekan.kookbot.bot;
 import ml.littlekan.kookbot.KOOKBot;
 import ml.littlekan.kookbot.KOOKMessageSender;
 import ml.littlekan.kookbot.user.KOOKUser;
-import net.kyori.adventure.text.Component;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+
 import java.sql.SQLException;
 
 public class MessageProc {
@@ -41,9 +42,9 @@ public class MessageProc {
 
                     format.replace("{kook_name}", new KOOKUser(data.getAuthor_id()).username);
                     format.replace("{mc_name}", mcname);
-                    format.replace("{message}", data.getContent().substring(6));
+                    format.replace("{message}", ChatColor.translateAlternateColorCodes('&', data.getContent().substring(6)));
                     for (Player p : Bukkit.getOnlinePlayers()) {
-                        p.sendMessage(Component.text(format));
+                        p.sendMessage(format);
                     }
                     new KOOKMessageSender("[KOOKBot] 发送成功啦 (*^▽^*)", data.getMsg_id()).send();
                     break;
