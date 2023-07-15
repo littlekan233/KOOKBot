@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 import java.net.HttpURLConnection;
 import ml.littlekan.kookbot.ErrorOut;
 import ml.littlekan.kookbot.KOOKBot;
-import ml.littlekan.kookbot.bot.ResponseException;
+import ml.littlekan.kookbot.ResponseException;
 
 public class KOOKUser {
     public String username;

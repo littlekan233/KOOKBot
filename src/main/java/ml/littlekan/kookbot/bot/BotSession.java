@@ -3,6 +3,9 @@ package ml.littlekan.kookbot.bot;
 import com.google.gson.Gson;
 import ml.littlekan.kookbot.ErrorOut;
 import ml.littlekan.kookbot.KOOKBot;
+import ml.littlekan.kookbot.ResponseException;
+import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import javax.websocket.*;
@@ -55,28 +58,44 @@ public class BotSession {
                 try {Thread.sleep(ms);} catch (InterruptedException e) {}
             }
 
+            private void sendPing(){
+                String sn = "0";
+                try {
+                    sn = new StringBuilder(sql.getSession(token).getInt("sn")).toString();
+                } catch (SQLException e) {
+                    new ErrorOut(e);
+                }
+                wss.getAsyncRemote().sendText("{\"s\": 5, \"sn\": " + sn + "}");
+            }
+
             private void retry(){
-                //
+                synchronized (this) {
+                    sendPing();
+                    sleep(2000);
+                    if(pong) next(); else {
+                        sendPing();
+                        sleep(4000);
+                        if (pong) next(); else connectError();
+                    }
+                }
+            }
+
+            private void connectError(){
+                instance.getLogger().severe("机器人Gateway无法正常连接！请检查网络！");
+            }
+
+            private void next(){
+                pong = false;
+                sleep(2400);
             }
 
             @Override
             public void run(){
                 sleep(3000);
                 while(!KOOKBot.isStop()){
-                    String sn = "0";
-                    try {
-                        sn = new StringBuilder(sql.getSession(token).getInt("sn")).toString();
-                    } catch (SQLException e) {
-                        new ErrorOut(e);
-                    }
-                    wss.getAsyncRemote().sendText("{\"s\": 5, \"sn\": " + sn + "}");
+                    sendPing();
                     sleep(6000);
-                    if(pong) {
-                        pong = false;
-                        sleep(24000);
-                    }else{
-                        retry();
-                    }
+                    if(pong) next(); else retry();
                 }
             }
         }.runTaskAsynchronously(instance);
@@ -104,7 +123,8 @@ public class BotSession {
             case 5:
                 throw new SessionException("完了！机器人电话打不通了！Σ(っ °Д °;)っ 明明上次还通的啊！", new ResponseException(data.getD().getCode()), wss);
             case 6:
-                instance.getLogger().info("");
+                instance.getLogger().info("恢复成功！");
+                break;
         }
     }
 }

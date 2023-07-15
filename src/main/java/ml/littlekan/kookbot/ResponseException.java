@@ -1,4 +1,4 @@
-package ml.littlekan.kookbot.bot;
+package ml.littlekan.kookbot;
 
 public class ResponseException extends Exception{
     public ResponseException(int code){

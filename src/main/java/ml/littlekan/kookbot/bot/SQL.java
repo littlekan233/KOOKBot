@@ -69,7 +69,16 @@ public class SQL {
         String exec = "select * from kookbot_link";
         ResultSet rs = sql.executeQuery(exec);
         while (rs.next()){
-            if(rs.getString("mcname") == mcuser) return rs;
+            if(rs.getString("kookid") == mcuser) return rs;
+        }
+        return null;
+    }
+
+    public ResultSet getLinkByKOOKUser(String kookuid) throws SQLException{
+        String exec = "select * from kookbot_link";
+        ResultSet rs = sql.executeQuery(exec);
+        while (rs.next()){
+            if(rs.getString("mcname") == kookuid) return rs;
         }
         return null;
     }
@@ -88,9 +97,7 @@ public class SQL {
             while(rs.next()){
                 if(rs.getString("verifycode") == verifycode) return rs.getString("mcid");
             }
-        } catch (SQLException e) {
-            new ErrorOut(e);
-        }
+        } catch (SQLException e) {}
         return "_$NullPlayer$_";
     }
 

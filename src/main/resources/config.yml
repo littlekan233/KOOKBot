@@ -3,7 +3,7 @@
 # ---------------------------------
 # 此插件是受EssentialsXDiscord的灵感，接入KOOK的机器人通讯插件！
 # 目前处于开发阶段，欢迎PR和提Issues！https://github.com/littlekan233/KOOKBot
-# 如何创建KOOK机器人？点击此链接->https://developer.kookapp.cn/app/index
+# 创建KOOK机器人？点击此链接->https://developer.kookapp.cn/app/index
 
 # 你需要填写token才能正常使用机器人
 token: "y0uR_7okEN"
@@ -26,16 +26,8 @@ chat_format:
   # KOOK服务器→MC服务器
   mc: "&a[KOOK] &6{kook_name}&l({mc_name}) &7>> &f&r{message}"
   # 占位符：
-  # {display_name}  仅MC->KOOK  显示名，先获取绑定信息然后@出来，否则用游戏名
-  # {kook_name}  仅KOOK->MC  KOOK昵称
+  # {display_name}  仅MC->KOOK  显示名，先获取绑定信息然后@出来，否则无法绑定
+  # {kook_name}  仅KOOK->MC  KOOK昵称（不是服务器内昵称！）
   # {mc_name}  仅KOOK->MC  在MC显示的用户名（非MC里的nick！）
   # {message}  两种都适用  【必须要！否则插件将因为不存在此占位符而禁用！】显示的信息
-
-# 你想要哪些功能？
-features:
-  # 绑定账户支持↓
-  bind: true
-  # 向KOOK服务器发送消息↓
-  send2kook: false
-  # 在KOOK里发送消息到服务器↓
-  send2mc: false
+  # ** MC->KOOK目前不支持颜色！！！！ **
