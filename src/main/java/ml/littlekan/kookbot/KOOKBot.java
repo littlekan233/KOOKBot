@@ -8,6 +8,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.Objects;
 
 public final class KOOKBot extends JavaPlugin {
     private static SQL sqli;
@@ -24,7 +25,7 @@ public final class KOOKBot extends JavaPlugin {
         pluginConfig = getConfig();
         bindManager = new BindManager();
         new BotSession(pluginConfig.getString("token"));
-        getCommand("kook").setExecutor(new BotCommand());
+        Objects.requireNonNull(getCommand("kook")).setExecutor(new BotCommand());
         getLogger().info("§a插件启用成功！（ '▿ ' ）");
         getLogger().info("§a主人正在使用的版本：§61.0.0-SNAPSHOT");
         getLogger().info("§a作者：§6小阚LittleKan（littlekan233）");

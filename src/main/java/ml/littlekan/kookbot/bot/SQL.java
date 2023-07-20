@@ -1,12 +1,13 @@
 package ml.littlekan.kookbot.bot;
 
 import ml.littlekan.kookbot.ErrorOut;
+import ml.littlekan.kookbot.KOOKBot;
 import ml.littlekan.kookbot.KOOKMessageSender;
 import ml.littlekan.kookbot.user.KOOKUser;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-
+import java.nio.file.Paths;
 import java.io.File;
 import java.sql.*;
 import java.util.Objects;
@@ -24,7 +25,7 @@ public class SQL {
             new ErrorOut(new RuntimeException("KOOKBot插件将因为 SQLite 数据库初始化错误禁用！", e));
             Bukkit.getPluginManager().disablePlugin(instance);
         }
-        String path = new File(instance.getDataFolder(), "kookbot.db").getPath();
+        String path = Paths.get(instance.getDataFolder().getPath(), "kookbot.db").toString();
         try {
             sqlconn = DriverManager.getConnection("jdbc:sqlite:" + path);
             sql = sqlconn.createStatement();
